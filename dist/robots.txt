@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vueltito.legios.com.ar/wiz-sunshine/sitemap.xml

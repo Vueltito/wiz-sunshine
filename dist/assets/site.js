@@ -1,5 +1,11 @@
 'use strict';
 
+// This project inherits Vueltito's domain; prefer its HTTPS entry point.
+const canonicalAddress = new URL(document.querySelector('link[rel="canonical"]').href);
+if (location.protocol === 'http:' && location.hostname === canonicalAddress.hostname) {
+  location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+}
+
 // Contact details are intentionally unset until the first visual review.
 // A query can still be prepared, edited, copied and downloaded in the browser.
 const SITE = {
@@ -56,6 +62,9 @@ menuButton.addEventListener('click', () => {
   mobileNav.hidden = !opening;
 });
 mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('pointerdown', event => {
+  if (!mobileNav.hidden && !document.querySelector('.header').contains(event.target)) closeMenu();
+});
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !mobileNav.hidden) {
     closeMenu();

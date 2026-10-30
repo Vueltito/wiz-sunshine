@@ -1,0 +1,12 @@
+{
+  "name": "wiz-sunshine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio de Wiz Sunshine: software a medida, sistemas, tiendas e integraciones.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "python3 scripts/serve.py",
+    "check": "python3 scripts/check-site.py",
+    "check:browser": "node scripts/check-browser.mjs"
+  }
+}
