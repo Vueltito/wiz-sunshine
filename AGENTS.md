@@ -7,6 +7,7 @@ Sitio de presentación de Sol Soletti y Lucio Rojas, con crédito de diseño de 
 - Usar rutas relativas para assets: el sitio vive bajo `/wiz-sunshine/`.
 - Mantener la identidad aprobada: logo de OpenRouter, avatar de Sol, imagen elegida para Mago e ilustraciones de Vueltito, Báltica y LADECE.
 - Dibujar los iconos con SVG; no usar caracteres de flechas o estrellas que iOS pueda convertir en emojis.
+- Usar `logo-clear.png` y sus derivados con alfa real para el logo visible, incluyendo durante las animaciones de entrada.
 - LADECE se presenta como un ERP integral en planificación; no atribuir funcionalidades entregadas a un proyecto futuro.
 - Los datos de contacto y los enlaces de proyectos están en `dist/assets/site.js`. El formulario prepara una consulta; su destino definitivo sigue pendiente de definición.
 - No incorporar credenciales, documentos privados, datos reales de clientes o datos de prueba a la publicación.

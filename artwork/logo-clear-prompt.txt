@@ -1,0 +1,5 @@
+Mode: built-in image editing, transparent_background=true.
+Input: dist/assets/logo-openrouter.png, the approved OpenRouter logo.
+Output: dist/assets/logo-clear.png.
+
+Edit target: the attached approved Wiz Sunshine logo. Use case: background-extraction. Remove only the solid white background and the white negative spaces, replacing all those white areas with genuine transparent alpha. Preserve the existing sun, wizard-hat silhouette and small yellow four-point sparkle exactly: same shape, proportions, position, smooth contours and original dark ink/yellow colors. This is a technical cutout of the existing approved brand, not a redesign. Keep the same square framing and margins. No text, no new objects, no shadows, no glow, no checkerboard painted into the image. Output a clean transparent PNG with crisp anti-aliased edges.

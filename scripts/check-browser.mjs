@@ -107,7 +107,7 @@ try{
  await evaluate('window.scrollTo({top:document.documentElement.scrollHeight,behavior:"instant"})');await shot('08-footer-escritorio.png');
  assert('Crédito solicitado',await evaluate('document.querySelector(".footer-credit").textContent.includes("Designed by")&&document.querySelector(".footer-credit a").textContent==="VT Security"&&document.querySelectorAll(".footer-credit img").length===2'));
  assert('Ilustraciones originales conservadas',await evaluate('!!document.querySelector(".work-grid .receipt")&&!!document.querySelector(".work-grid .shop-window")&&!!document.querySelector(".work-grid .erp-window")&&document.querySelectorAll(".work-grid img").length===0'));
- assert('Logo OpenRouter integrado',await evaluate('Array.from(document.querySelectorAll(".brand>img")).every(i=>i.getAttribute("src")==="assets/logo-openrouter.png")'));
+ assert('Logo aprobado con fondo transparente integrado',await evaluate('Array.from(document.querySelectorAll(".brand>img")).every(i=>i.getAttribute("src")==="assets/logo-clear.png")'));
  assert('Logo grande en la portada',await evaluate('document.querySelector(".hero-logo").getBoundingClientRect().width>=150'));
 
  await viewport(390,1050);await evaluate('window.scrollTo({top:document.getElementById("equipo").offsetTop-15,behavior:"instant"})');await shot('09-equipo-celular.png');

@@ -94,3 +94,7 @@ Se siguen las [recomendaciones de Google para funciones de IA](https://developer
 `robots.txt` de este proyecto documenta su sitemap, pero los rastreadores aplican el archivo de la raíz del dominio. Search Console y el envío del sitemap son gestiones externas al despliegue; una auditoría local no verifica que Google haya indexado la página.
 
 Los iconos de interfaz son SVG para que iOS no los convierta en emojis. El logo usa versiones adaptables y el fondo se sirve precalculado para evitar cálculos de imagen durante la carga.
+
+El logo visible usa `logo-clear.png` y sus derivados WebP con alfa real. No depende de `mix-blend-mode`, para evitar un recuadro blanco durante las animaciones de entrada en Safari. El original de OpenRouter permanece como referencia de marca.
+
+Las tarjetas del equipo enlazan a GitHub y LinkedIn: Sol (`solsolettidev`, `solsoletti`) y Lucio (`mago-tera`, `lucio-rojas-344216243`).

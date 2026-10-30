@@ -6,6 +6,7 @@
 - **Avatar de Mago:** imagen proporcionada y elegida para este sitio.
 - **Logo de Wiz Sunshine:** generado mediante OpenRouter con `google/gemini-3-pro-image`.
 - **Versiones web del logo:** derivados WebP de 192, 384 y 512 px del logo aprobado; el PNG original se conserva.
+- **Logo transparente:** recorte del fondo mediante la herramienta de edición de imágenes, a partir del logo aprobado de OpenRouter; `logo-clear.png` conserva alfa real y sus versiones WebP se usan en la interfaz.
 - **Fondo de portada:** imagen precalculada a partir de la ilustración procedural original, cuya fuente está en `artwork/sunshine-sky.mjs`.
 - **Imagen social:** composición del sitio con el logo aprobado y las fuentes locales.
 - **Ilustraciones de proyectos, pingüino y corazón:** recursos SVG, CSS y canvas del sitio.
