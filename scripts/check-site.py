@@ -70,6 +70,32 @@ page.feed((DIST / 'index.html').read_text())
 require(len(page.ids) == len(set(page.ids)), 'Hay IDs duplicados en index.html')
 require(page.canonical == [URL], 'Canonical distinto de site.config.json')
 require(page.og_url == [URL], 'og:url distinto de site.config.json')
+html = (DIST / 'index.html').read_text()
+structured = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+require(len(structured) == 1, 'Se espera un único bloque de datos estructurados')
+for block in structured:
+    try:
+        data = json.loads(block)
+        graph = data.get('@graph', [])
+        require(data.get('@context') == 'https://schema.org', 'Contexto JSON-LD incorrecto')
+        types = [node.get('@type') for node in graph]
+        require(all(kind in types for kind in ('Organization', 'WebSite', 'WebPage', 'Service')), 'Faltan entidades de estudio, sitio, página o servicios')
+        require(types.count('Service') == 3, 'Los servicios estructurados deben coincidir con los tres servicios visibles')
+        ids = {node.get('@id') for node in graph}
+        require(len(ids) == len(graph), 'IDs de entidades duplicados')
+        for node in graph:
+            require(node.get('@id', '').startswith(URL + '#'), 'Entidad fuera de la URL canónica')
+            for key in ('provider', 'publisher', 'about', 'isPartOf'):
+                if key in node:
+                    require(node[key].get('@id') in ids, f'Referencia JSON-LD sin entidad: {key}')
+    except (ValueError, TypeError, KeyError) as error:
+        require(False, f'Datos estructurados inválidos: {error}')
+for property in ('og:image', 'twitter:image'):
+    match = re.search(r'<meta (?:property|name)="' + property + r'" content="([^"]+)"', html)
+    require(match is not None, f'Falta {property}')
+    if match:
+        path = local_asset(match[1])
+        require(path is not None and path.is_file(), f'Imagen social inexistente: {property}')
 for reference in page.assets:
     path = local_asset(reference)
     if path is not None:
@@ -103,6 +129,12 @@ for file in DIST.rglob('*'):
     if file.suffix in ('.html', '.js', '.css', '.json', '.webmanifest', '.xml', '.txt'):
         text = file.read_text()
         require('wiz-sunshine.vtsec.chatgpt.site' not in text, f'URL de vista previa privada en {file.relative_to(DIST)}')
+        if file.suffix in ('.html', '.js', '.css'):
+            require(not re.search('[\u2190-\u21ff\u2600-\u27bf\U0001f300-\U0001faff]', text), f'Símbolo que puede convertirse en emoji en {file.relative_to(DIST)}; usar SVG')
+
+for reference in re.findall(r'(?:assets/)[^"\s,]+\.(?:webp|png)\s+\d+w', html):
+    path = local_asset(reference.rsplit(' ', 1)[0])
+    require(path is not None and path.is_file(), f'Imagen adaptable inexistente: {reference}')
 
 for file in DIST.rglob('*.js'):
     result = subprocess.run(['node', '--check', str(file)], capture_output=True, text=True)
@@ -111,4 +143,4 @@ for file in DIST.rglob('*.js'):
 if ERRORS:
     print('\n'.join('ERROR: ' + message for message in ERRORS), file=sys.stderr)
     sys.exit(1)
-print(f'OK: {len(page.ids)} IDs únicos, {len(page.assets)} assets HTML, anclas, CSS, fuentes, metadata y JavaScript.')
+print(f'OK: {len(page.ids)} IDs únicos, {len(page.assets)} assets HTML, anclas, CSS, fuentes, SEO/JSON-LD, iconos y JavaScript.')

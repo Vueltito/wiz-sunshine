@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "python3 scripts/serve.py",
     "check": "python3 scripts/check-site.py",
-    "check:browser": "node scripts/check-browser.mjs"
+    "check:browser": "node scripts/check-browser.mjs",
+    "audit:mobile": "node scripts/audit.mjs mobile",
+    "audit:desktop": "node scripts/audit.mjs desktop"
   }
 }

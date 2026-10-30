@@ -33,6 +33,15 @@ npm run check:browser
 
 El primer comando verifica assets, anclas, CSS, fuentes, manifest, URLs públicas y sintaxis de JavaScript. El segundo requiere Chrome o Chromium; inicia su propio servidor local y un perfil aislado de navegador, revisa escritorio y móvil, y escribe su informe y capturas en `artifacts/browser/`, que está ignorado por Git.
 
+Para auditar la publicación con Lighthouse CLI 13.6.0:
+
+```sh
+npm run audit:mobile
+npm run audit:desktop
+```
+
+La primera ejecución descarga Lighthouse mediante `npx`; no agrega dependencias al sitio. Cada comando guarda un informe HTML y otro JSON en `artifacts/lighthouse/`. Se puede usar `SITE_URL` para auditar una vista previa local. Ejecutar los modos de forma secuencial para que no compitan por CPU; los resultados varían con la máquina y la red.
+
 Para usar otro binario, definir `CHROME_BIN`. Para comprobar una publicación existente, definir `SITE_URL` con su dirección HTTPS; el script prepara consultas de prueba dentro del navegador, sin enviarlas.
 
 ## Estructura
@@ -75,3 +84,13 @@ Los cambios de `main` disparan **Verify and deploy Pages**. Tanto los pull reque
 Pages usa el dominio que ya tiene la organización Vueltito, por eso la dirección pública queda bajo `/wiz-sunshine/`. Los assets usan rutas relativas. Si cambia el dominio, actualizar `site.config.json`, canonical y `og:url` en `index.html`, sitemap, robots y los enlaces de `404.html`.
 
 El directorio `.openai/` corresponde a la vista previa original y permanece local e ignorado; GitHub Pages es el destino principal de este repositorio.
+
+## SEO y buscadores con IA
+
+La página incluye canonical, título y descripción, tarjeta social, sitemap, contenido textual en HTML y datos JSON-LD de `Organization`, `WebSite`, `WebPage` y los tres servicios. La sección de preguntas frecuentes responde dudas sobre el estudio y cómo empezar. Los datos de contacto siguen sin inventarse y LADECE conserva su estado de planificación.
+
+Se siguen las [recomendaciones de Google para funciones de IA](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) y de [datos de organización](https://developers.google.com/search/docs/appearance/structured-data/organization). Los datos estructurados coinciden con el contenido visible; no hay una puntuación AEO ni una garantía de indexación, posición o aparición en respuestas de IA.
+
+`robots.txt` de este proyecto documenta su sitemap, pero los rastreadores aplican el archivo de la raíz del dominio. Search Console y el envío del sitemap son gestiones externas al despliegue; una auditoría local no verifica que Google haya indexado la página.
+
+Los iconos de interfaz son SVG para que iOS no los convierta en emojis. El logo usa versiones adaptables y el fondo se sirve precalculado para evitar cálculos de imagen durante la carga.

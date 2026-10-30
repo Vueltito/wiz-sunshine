@@ -40,8 +40,9 @@ document.querySelectorAll('.project-open').forEach(button => {
 });
 
 let progressFrame = 0;
+let pageHeight = 0;
 function updateProgress() {
-  const available = document.documentElement.scrollHeight - innerHeight;
+  const available = pageHeight - innerHeight;
   const progress = available > 0 ? Math.max(0, Math.min(1, scrollY / available)) : 0;
   document.documentElement.style.setProperty('--page-progress', String(progress));
   progressFrame = 0;
@@ -51,11 +52,22 @@ function scheduleProgress() {
 }
 window.addEventListener('scroll', scheduleProgress, {passive:true});
 window.addEventListener('resize', scheduleProgress, {passive:true});
-window.addEventListener('load', scheduleProgress, {once:true});
-updateProgress();
+if ('ResizeObserver' in window) {
+  new ResizeObserver(entries => {
+    pageHeight = entries[0].contentRect.height;
+    scheduleProgress();
+  }).observe(document.body);
+} else {
+  function measurePage() {
+    pageHeight = document.documentElement.scrollHeight;
+    scheduleProgress();
+  }
+  window.addEventListener('load', measurePage, {once:true});
+  window.addEventListener('resize', measurePage, {passive:true});
+}
 
 if (!reducedMotion.matches && 'IntersectionObserver' in window) {
-  const targets = document.querySelectorAll('.section-heading,.services-intro,.service-list,.process-grid article,.team-copy,.person,.contact-grid>div,.brief-form');
+  const targets = document.querySelectorAll('.section-heading,.project-card,.services-intro,.service-list,.process-grid article,.team-copy,.person,.faq-intro,.faq-list,.contact-grid>div,.brief-form');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
