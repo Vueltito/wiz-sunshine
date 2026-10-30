@@ -6,12 +6,11 @@ if (location.protocol === 'http:' && location.hostname === canonicalAddress.host
   location.replace('https://' + location.host + location.pathname + location.search + location.hash);
 }
 
-// Contact details are intentionally unset until the first visual review.
-// A query can still be prepared, edited, copied and downloaded in the browser.
+// Public contact and project destinations supplied by the site owner.
 const SITE = {
   email: null,
-  whatsapp: null,
-  balticaUrl: null,
+  whatsapp: '+54 9 3364 40-5007',
+  balticaUrl: 'https://www.balticaaccesorios.com.ar/',
   vueltitoUrl: 'https://vueltito.legios.com.ar/'
 };
 
@@ -149,14 +148,16 @@ function refreshContactLink() {
   else sendBrief.removeAttribute('href');
 }
 if (SITE.email || SITE.whatsapp) {
-  const link = document.createElement('a');
-  link.textContent = SITE.email || SITE.whatsapp;
+  const link = contactAddress.querySelector('a') || document.createElement('a');
+  link.textContent = SITE.email || 'WhatsApp: ' + SITE.whatsapp;
   link.href = SITE.email ? 'mailto:' + SITE.email : 'https://wa.me/' + SITE.whatsapp.replace(/\D/g, '');
-  contactAddress.append(link);
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  contactAddress.replaceChildren(link);
   contactAddress.hidden = false;
   document.getElementById('contact-submit-label').textContent = 'Preparar mi mensaje';
-  document.getElementById('form-note').textContent = 'Revisá tu consulta y abrila en tu app de mensajes.';
-  document.getElementById('brief-explanation').textContent = 'Tu mensaje está listo. Revisalo y abrilo para enviarlo cuando quieras.';
+  document.getElementById('form-note').textContent = 'Revisá tu consulta y abrila en WhatsApp para enviarla.';
+  document.getElementById('brief-explanation').textContent = 'Tu mensaje está listo. Revisalo y abrilo en WhatsApp para enviarlo cuando quieras.';
 }
 
 briefForm.addEventListener('submit', event => {

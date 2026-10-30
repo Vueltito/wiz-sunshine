@@ -131,3 +131,4 @@
   .person-screen:hover::after,.person-screen:focus-visible::after{animation:portrait-shine .9s ease both}
 }
 @keyframes portrait-shine{0%{opacity:0;transform:translateX(-130%)}15%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translateX(130%)}}
+.contact-address a{display:inline-flex;align-items:center;min-height:48px;font-size:16px;line-height:1.7}

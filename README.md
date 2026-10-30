@@ -73,8 +73,9 @@ site.config.json          URL pública y datos del proyecto
 
 - Los proyectos, sus estados, contactos y enlaces externos están en `dist/assets/site.js`.
 - Los textos y la composición están en `dist/index.html`.
-- El contacto definitivo de la factory sigue pendiente de definición. Por ahora el formulario **prepara una consulta editable**, que la persona puede copiar o descargar. No muestra un envío exitoso ni guarda datos en un servidor.
-- Para activar un destino, completar `SITE.email` o `SITE.whatsapp` en `site.js`. La persona revisa el mensaje antes de abrir su aplicación para enviarlo.
+- Contacto público: **WhatsApp +54 9 3364 40-5007**, con enlace a `https://wa.me/5493364405007`. El formulario prepara una consulta editable y la abre en WhatsApp para que la persona la envíe. También permite copiarla o descargarla; no simula envíos ni guarda datos en un servidor.
+- Tienda de Báltica: <https://www.balticaaccesorios.com.ar/>. El detalle de proyecto enlaza a su dirección definitiva.
+- Para cambiar el destino, editar `SITE.email` o `SITE.whatsapp` en `site.js` y actualizar el contacto visible y JSON-LD de `index.html`. La persona revisa el mensaje antes de abrir su aplicación para enviarlo.
 - Los recursos y las licencias de fuentes están documentados en [NOTICE.md](NOTICE.md).
 
 ## Publicación
@@ -87,7 +88,7 @@ El directorio `.openai/` corresponde a la vista previa original y permanece loca
 
 ## SEO y buscadores con IA
 
-La página incluye canonical, título y descripción, tarjeta social, sitemap, contenido textual en HTML y datos JSON-LD de `Organization`, `WebSite`, `WebPage` y los tres servicios. La sección de preguntas frecuentes responde dudas sobre el estudio y cómo empezar. Los datos de contacto siguen sin inventarse y LADECE conserva su estado de planificación.
+La página incluye canonical, título y descripción, tarjeta social, sitemap, contenido textual en HTML y datos JSON-LD de `Organization`, `WebSite`, `WebPage` y los tres servicios. La sección de preguntas frecuentes responde dudas sobre el estudio y cómo empezar. Los datos de contacto corresponden al número suministrado por el responsable del sitio y LADECE conserva su estado de planificación.
 
 Se siguen las [recomendaciones de Google para funciones de IA](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) y de [datos de organización](https://developers.google.com/search/docs/appearance/structured-data/organization). Los datos estructurados coinciden con el contenido visible; no hay una puntuación AEO ni una garantía de indexación, posición o aparición en respuestas de IA.
 

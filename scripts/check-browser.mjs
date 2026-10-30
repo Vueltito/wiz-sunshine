@@ -50,6 +50,7 @@ try{
   await evaluate('document.querySelector("[data-project='+key+']").click()');await settle();
   const data=await evaluate('({open:document.getElementById("project-dialog").open,title:document.getElementById("dialog-title").textContent,status:document.getElementById("dialog-status").textContent,items:document.querySelectorAll("#dialog-scope li").length})');
   assert('Detalle de '+key,data.open&&data.title.length>5&&data.items>=3,data);assert('Ilustración del detalle '+key,await evaluate('document.querySelectorAll("#dialog-visual>.project-art").length===1'));
+  if(key==='baltica')assert('Báltica enlaza a la tienda definitiva',await evaluate('!document.getElementById("dialog-external").hidden&&document.getElementById("dialog-external").href==="https://www.balticaaccesorios.com.ar/"'));
   if(key==='ladece'){assert('ERP completo identificado como proyecto futuro',data.status==='En planificación'&&data.items===6,data);await shot('03-ladece-erp.png');}
   await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});await settle();
   assert('Escape cierra '+key,await evaluate('!document.getElementById("project-dialog").open && !document.body.classList.contains("dialog-open")'));
@@ -58,9 +59,11 @@ try{
  assert('Servicios desplegables',await evaluate('document.querySelectorAll("details.service[open]").length===1&&document.querySelectorAll("details.service")[1].open'));
  await evaluate('document.querySelector("#brief-form [name=name]").value="Persona de muestra";document.querySelector("#brief-form [name=business]").value="Proyecto de ejemplo";document.querySelector("#brief-form [name=message]").value="Queremos ordenar los pedidos y conectar el stock con la administración.";document.getElementById("brief-form").requestSubmit()');await settle();
  assert('La consulta se prepara con los datos ingresados',await evaluate('document.getElementById("brief-dialog").open&&document.getElementById("brief-text").value.includes("Persona de muestra")&&document.getElementById("brief-text").value.includes("sistema de gestión o ERP")'));
- assert('No se simula un envío a un contacto pendiente',await evaluate('document.getElementById("send-brief").hidden'));
+ assert('Consulta lista para abrir en el WhatsApp definitivo',await evaluate('(()=>{const a=document.getElementById("send-brief"),url=new URL(a.href);return !a.hidden&&url.origin==="https://wa.me"&&url.pathname==="/5493364405007"&&url.searchParams.get("text")===document.getElementById("brief-text").value})()'));
+ assert('WhatsApp de contacto visible y correcto',await evaluate('!document.getElementById("contact-address").hidden&&document.querySelector("#contact-address a").href==="https://wa.me/5493364405007"'));
  await evaluate('document.getElementById("brief-text").value+="\\nPodemos empezar conversando.";document.getElementById("brief-text").dispatchEvent(new Event("input",{bubbles:true}))');
  assert('Consulta editable',await evaluate('document.getElementById("brief-text").value.endsWith("Podemos empezar conversando.")'));
+ assert('WhatsApp conserva el mensaje después de editarlo',await evaluate('new URL(document.getElementById("send-brief").href).searchParams.get("text")===document.getElementById("brief-text").value'));
  await evaluate('Object.defineProperty(navigator,"clipboard",{configurable:true,value:{writeText:async text=>{window.__testClipboard=text;}}});document.getElementById("copy-brief").click()');await settle();
  assert('Copia de la consulta en un portapapeles de prueba',await evaluate('window.__testClipboard===document.getElementById("brief-text").value&&document.getElementById("copy-status").textContent.includes("copiada")'));
  await evaluate('Object.defineProperty(navigator,"clipboard",{configurable:true,value:{writeText:async()=>{throw new Error("denied for test");}}});document.getElementById("copy-brief").click()');await settle();
@@ -115,7 +118,7 @@ try{
  await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
  assert('Preferencia de movimiento reducido',await evaluate('getComputedStyle(document.documentElement).scrollBehavior==="auto"'));
  assert('Sin excepciones JavaScript',runtimeErrors.length===0,runtimeErrors);
- const report={date:new Date().toISOString(),url,checks,screenshots:['01-inicio-escritorio.png','02-proyectos-escritorio.png','03-ladece-erp.png','04-inicio-celular.png','05-proyectos-celular.png','06-contacto-celular.png','07-equipo-escritorio.png','08-footer-escritorio.png','09-equipo-celular.png','10-footer-celular.png','11-inicio-320.png','12-detalle-celular.png','13-consulta-celular.png'],limitations:['El contacto definitivo y la URL de Báltica siguen pendientes de definición.','La copia se verifica con un portapapeles de prueba para no alterar el del usuario.','Los tamaños móviles y horizontales se emulan en Chrome; no es una prueba en dispositivos físicos.']};
+ const report={date:new Date().toISOString(),url,checks,screenshots:['01-inicio-escritorio.png','02-proyectos-escritorio.png','03-ladece-erp.png','04-inicio-celular.png','05-proyectos-celular.png','06-contacto-celular.png','07-equipo-escritorio.png','08-footer-escritorio.png','09-equipo-celular.png','10-footer-celular.png','11-inicio-320.png','12-detalle-celular.png','13-consulta-celular.png'],limitations:['Se verifica el enlace y el texto de WhatsApp sin abrir la aplicación ni enviar mensajes.','La copia se verifica con un portapapeles de prueba para no alterar el del usuario.','Los tamaños móviles y horizontales se emulan en Chrome; no es una prueba en dispositivos físicos.']};
  await writeFile(out+'/verification.json',JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify({ok:true,checks:checks.length,output:out}));
  await send('Browser.close');
