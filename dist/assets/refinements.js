@@ -16,6 +16,10 @@ const finePointer = window.matchMedia('(hover:hover) and (pointer:fine)');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
 document.querySelectorAll('.project-open').forEach(button => {
   let frame = 0;
+  function resetArtwork() {
+    cancelAnimationFrame(frame);
+    ['--tilt-x', '--tilt-y', '--light-x', '--light-y'].forEach(property => button.style.removeProperty(property));
+  }
   button.addEventListener('pointermove', event => {
     if (!finePointer.matches || reducedMotion.matches) return;
     cancelAnimationFrame(frame);
@@ -25,13 +29,14 @@ document.querySelectorAll('.project-open').forEach(button => {
       const y = Math.max(-1, Math.min(1, ((event.clientY - box.top) / box.height - .5) * 2));
       button.style.setProperty('--tilt-x', (-y * 3).toFixed(2) + 'deg');
       button.style.setProperty('--tilt-y', (x * 4).toFixed(2) + 'deg');
+      button.style.setProperty('--light-x', ((x + 1) * 50).toFixed(1) + '%');
+      button.style.setProperty('--light-y', ((y + 1) * 50).toFixed(1) + '%');
     });
   }, {passive:true});
-  button.addEventListener('pointerleave', () => {
-    cancelAnimationFrame(frame);
-    button.style.removeProperty('--tilt-x');
-    button.style.removeProperty('--tilt-y');
-  });
+  button.addEventListener('pointerleave', resetArtwork);
+  button.addEventListener('pointercancel', resetArtwork);
+  reducedMotion.addEventListener('change', resetArtwork);
+  finePointer.addEventListener('change', resetArtwork);
 });
 
 let progressFrame = 0;

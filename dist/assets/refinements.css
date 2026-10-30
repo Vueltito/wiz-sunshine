@@ -19,3 +19,41 @@
 @media(pointer:coarse){.desktop-nav a,.nav-contact,.hero-actions .text-link,.dialog-actions .text-link{display:inline-flex;align-items:center;min-height:44px}.dialog-close{width:44px;height:44px}.form-body input:not([type=radio]),.form-body textarea{font-size:16px;min-height:48px}.type-options span{min-height:44px;display:flex;align-items:center}.person-profile-link,.footer-bottom a,.footer-credit a{display:inline-flex;align-items:center;min-height:44px}.scroll-link{width:44px;height:44px}}
 @media(max-width:650px),(pointer:coarse){#brief-text{font-size:16px;line-height:1.7;min-height:300px}}
 @media(max-width:370px){.hero h1{font-size:clamp(40px,12.5vw,46px)}}
+
+/* A little sunshine: brief entrances, glints and light on the artwork. */
+.hero-emblem{position:relative;flex:none;width:160px;height:160px}
+.hero-emblem .hero-logo{width:100%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.hero-emblem::before,.hero-emblem::after{content:'';position:absolute;width:14px;height:14px;pointer-events:none;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+.hero-emblem::before{right:-2px;top:13%;background:#a58acb;transform:rotate(12deg)}
+.hero-emblem::after{left:0;bottom:10%;width:9px;height:9px;background:#bd8c16;transform:rotate(-8deg)}
+.project-art::before{background:radial-gradient(ellipse at var(--light-x,25%) var(--light-y,12%),#fff9,transparent 65%);opacity:.35;transition:opacity .35s}
+.project-open:focus-visible .project-art::before{opacity:.85}
+.hero-actions .button{position:relative;overflow:hidden}
+.hero-actions .button::after{content:'';position:absolute;inset:-1px;pointer-events:none;background:linear-gradient(110deg,transparent 25%,#ffffff32 45%,#ffffff09 55%,transparent 75%);transform:translateX(-135%)}
+@media(max-width:650px){.hero-emblem{width:111px;height:111px}.hero-emblem::before{width:11px;height:11px;right:1px}.hero-emblem::after{width:7px;height:7px}}
+@media(max-width:370px){.hero-emblem{width:96px;height:96px}}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .hero-emblem:hover .hero-logo{transform:scale(1.14) rotate(-8deg)}
+  .project-open:hover .project-art::before{opacity:.85}
+  .hero-actions .button:hover::after{transform:translateX(135%);transition:transform .75s cubic-bezier(.2,.65,.35,1)}
+}
+@media(prefers-reduced-motion:no-preference){
+  .hero-brand-stage{animation:sunshine-enter .7s cubic-bezier(.2,.8,.2,1) .06s backwards}
+  .hero-emblem .hero-logo{animation:logo-arrive .9s cubic-bezier(.2,.8,.2,1) .06s backwards}
+  .hero-emblem::before{animation:logo-glint 1.4s ease .3s backwards}
+  .hero-emblem::after{animation:logo-glint 1.4s ease .65s backwards}
+  .hero-eyebrow{animation:sunshine-enter .65s cubic-bezier(.2,.8,.2,1) .16s backwards}
+  .hero h1{animation:sunshine-enter .8s cubic-bezier(.2,.8,.2,1) .23s backwards}
+  .hero h1>span::after{transform-origin:left center;animation:sunshine-underline .75s cubic-bezier(.2,.8,.2,1) .55s backwards}
+  .hero-description{animation:sunshine-enter .7s cubic-bezier(.2,.8,.2,1) .35s backwards}
+  .hero-actions{animation:sunshine-enter .7s cubic-bezier(.2,.8,.2,1) .43s backwards}
+  dialog[open]{animation:window-open .28s cubic-bezier(.2,.8,.2,1)}
+  dialog[open]::backdrop{animation:window-backdrop .22s ease}
+  .service[open] .service-body{animation:sunshine-enter .3s ease backwards}
+}
+@keyframes sunshine-enter{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+@keyframes logo-arrive{from{transform:scale(.98) rotate(-9deg)}}
+@keyframes logo-glint{0%{opacity:0;scale:.3;rotate:-25deg}45%{opacity:1;scale:1.45;rotate:12deg}100%{opacity:1;scale:1;rotate:0deg}}
+@keyframes sunshine-underline{from{transform:rotate(-1.3deg) scaleX(0)}to{transform:rotate(-1.3deg) scaleX(1)}}
+@keyframes window-open{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes window-backdrop{from{opacity:0}to{opacity:1}}
